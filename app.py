@@ -1,7 +1,8 @@
 import os
 import random
 
-from flask import Flask, request
+import requests
+from flask import Flask, json, request
 
 random.seed()
 
@@ -18,7 +19,18 @@ def roll():
     for j in range(rolls):
       roll = random.randint(1, faces)
       resp += "  Roll {}: {}\n".format(j + 1, roll)
-  return resp
+  icon_emoji = "dice{}".format(random.randint(1, 6))
+  requests.post(
+    os.environ["WEBHOOK_URL"],
+    data=json.dumps({
+      "text": resp,
+      "icon_emoji": icon_emoji,
+      "username": "Dice Roller",
+      "channel": "#" + request.form["channel_name"],
+    }),
+    headers={"Content-Type": "application/json"},
+  )
+  return ""
 
 
 app.run(host="0.0.0.0", port=os.environ["PORT"])
