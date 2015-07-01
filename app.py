@@ -19,7 +19,7 @@ def roll():
     for j in range(rolls):
       roll = random.randint(1, faces)
       resp += "  Roll {}: {}\n".format(j + 1, roll)
-  icon_emoji = "dice{}".format(random.randint(1, 6))
+  icon_emoji = ":dice{}:".format(random.randint(1, 6))
   requests.post(
     os.environ["WEBHOOK_URL"],
     data=json.dumps({
